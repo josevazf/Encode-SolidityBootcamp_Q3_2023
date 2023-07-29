@@ -24,6 +24,45 @@
 				"type": "function"
 			},
 			{
+				"inputs": [],
+				"name": "isPure",
+				"outputs": [
+					{
+						"internalType": "bool",
+						"name": "returnValue_",
+						"type": "bool"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "pureText",
+				"outputs": [
+					{
+						"internalType": "string",
+						"name": "",
+						"type": "string"
+					}
+				],
+				"stateMutability": "pure",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "restore",
+				"outputs": [
+					{
+						"internalType": "bool",
+						"name": "",
+						"type": "bool"
+					}
+				],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
 				"inputs": [
 					{
 						"internalType": "string",
@@ -33,7 +72,7 @@
 				],
 				"name": "setText",
 				"outputs": [],
-				"stateMutability": "payable",
+				"stateMutability": "nonpayable",
 				"type": "function"
 			}
 		],
@@ -50,7 +89,7 @@
 	},
 	"settings": {
 		"compilationTarget": {
-			"Lesson1/HelloWorld.sol": "HelloWorld"
+			"Lesson3/HelloWorld.sol": "HelloWorld"
 		},
 		"evmVersion": "paris",
 		"libraries": {},
@@ -64,12 +103,12 @@
 		"remappings": []
 	},
 	"sources": {
-		"Lesson1/HelloWorld.sol": {
-			"keccak256": "0xb1d693947be31f4c0c0dce052dcfc1ac952caf5cf0670dcffe9caa4807c0ed52",
-			"license": "MIT",
+		"Lesson3/HelloWorld.sol": {
+			"keccak256": "0x83024a248e8e95a250f569a6ad3292f0cbc7e4ff77eb911498e413583f74dd2c",
+			"license": "GPL-3.0",
 			"urls": [
-				"bzz-raw://ff0ecaec8f36108dc73a71c8d85f3d695f1b80cc11bd5887a882a7cea297b302",
-				"dweb:/ipfs/Qmddbe7wmc8LeFWfEDJq8AFwxvwb9A4ma6sNK3Uygi88mA"
+				"bzz-raw://84dcde720590a07f650d70562ba24aa0edac74a4dcbdbacf2f227b7dd8fed921",
+				"dweb:/ipfs/QmXa5TncNfE8upJSVW4oE8FoP4tgaYdHVF1Pw7J2t1CpLz"
 			]
 		}
 	},

@@ -24,6 +24,19 @@
 				"type": "function"
 			},
 			{
+				"inputs": [],
+				"name": "owner",
+				"outputs": [
+					{
+						"internalType": "address",
+						"name": "",
+						"type": "address"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
 				"inputs": [
 					{
 						"internalType": "string",
@@ -33,7 +46,20 @@
 				],
 				"name": "setText",
 				"outputs": [],
-				"stateMutability": "payable",
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "newOwner",
+						"type": "address"
+					}
+				],
+				"name": "transferOwnership",
+				"outputs": [],
+				"stateMutability": "nonpayable",
 				"type": "function"
 			}
 		],
@@ -50,7 +76,7 @@
 	},
 	"settings": {
 		"compilationTarget": {
-			"Lesson1/HelloWorld.sol": "HelloWorld"
+			"Group work/HelloWorld.sol": "HelloWorld"
 		},
 		"evmVersion": "paris",
 		"libraries": {},
@@ -64,12 +90,12 @@
 		"remappings": []
 	},
 	"sources": {
-		"Lesson1/HelloWorld.sol": {
-			"keccak256": "0xb1d693947be31f4c0c0dce052dcfc1ac952caf5cf0670dcffe9caa4807c0ed52",
-			"license": "MIT",
+		"Group work/HelloWorld.sol": {
+			"keccak256": "0x8c281b135fe3db644fd9559bc7a6498f5a54fd9ea8a1d7acd4eaccff6f6d1df4",
+			"license": "GPL-3.0",
 			"urls": [
-				"bzz-raw://ff0ecaec8f36108dc73a71c8d85f3d695f1b80cc11bd5887a882a7cea297b302",
-				"dweb:/ipfs/Qmddbe7wmc8LeFWfEDJq8AFwxvwb9A4ma6sNK3Uygi88mA"
+				"bzz-raw://71920cda3b9d7effa31dcd3d23908dcbc50595b52791693b2f06cf326938f017",
+				"dweb:/ipfs/QmSq499vhRcg9g5kGSPAvbnGRLzcnUPe7tqtDPcBsYacwm"
 			]
 		}
 	},
