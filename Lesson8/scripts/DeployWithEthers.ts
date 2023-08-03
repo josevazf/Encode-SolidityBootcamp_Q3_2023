@@ -1,16 +1,20 @@
-import { getContractFactory } from "@nomicfoundation/hardhat-ethers/types";
-import { ethers } from "hardhat";
-
-const PROPOSALS = ["Proposal 1", "Proposal 2", "Proposal 3"];
+import { ethers } from "ethers";
+import { Ballot__factory } from "../typechain-types";
+require('dotenv').config()
 
 async function main() {
-	const proposals = process.argv.slice(2);
+/* 	const proposals = process.argv.slice(2);
 	console.log("Deploying Ballot contract");
 	console.log("Proposals: ");
 	proposals.forEach((element, index) => {
 		console.log(`Proposal N. ${index + 1}: ${element}`);
-	});
-	const ballotFactory = await ethers.getContractFactory("Ballot");
+	}); */
+	const alchemyUrl = `https://eth-sepolia.g.alchemy.com/v2/${process.env.ALCHEMY_KEY}`;
+	const provider = new ethers.JsonRpcProvider(alchemyUrl);
+	const lastBlock = await provider.getBlockNumber();
+	console.log(lastBlock);
+
+/* 	const ballotFactory = new Ballot__factory();
 	const ballotContract = await ballotFactory.deploy(
 		proposals.map(ethers.encodeBytes32String));
 	await ballotContract.waitForDeployment();
@@ -20,7 +24,7 @@ async function main() {
 		const proposal = await ballotContract.proposals(index);
 		const name = ethers.decodeBytes32String(proposal.name);
 		console.log({ index, name, proposal });
-	}
+	} */
 }
 
 main().catch((error) => {
