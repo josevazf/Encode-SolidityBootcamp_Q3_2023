@@ -24,7 +24,6 @@ async function deployContract() {
 
 describe("Ballot", async () => {
 	let ballotContract: Ballot;
-	let accounts = await ethers.getSigners();
 
 	beforeEach(async () => {
 		ballotContract = await loadFixture(deployContract);
@@ -38,20 +37,19 @@ describe("Ballot", async () => {
 				PROPOSALS[index]);
 			}
 		});
-  
 		it("has zero votes for all proposals", async () => {
  			for (let index = 0; index < PROPOSALS.length; index++) {
 				const proposal = await ballotContract.proposals(index);
 				expect(proposal.voteCount).to.eq(0n);
 			}
 		});
-
 		it("sets the deployer address as chairperson", async () => {
+			const accounts = await ethers.getSigners();
 			const chairperson = await ballotContract.chairperson();
 			expect(chairperson).to.eq(accounts[0].address);
 		});
-
 		it("sets the voting weight for the chairperson as 1", async () => {
+			const accounts = await ethers.getSigners();			
 			const chairpersonVoter = await ballotContract.voters(accounts[0].address);
 			expect(chairpersonVoter.weight).to.eq(1);
 		});
@@ -59,16 +57,22 @@ describe("Ballot", async () => {
 
 	describe("when the chairperson interacts with the giveRightToVote function in the contract", async () => {
 		it("gives right to vote for another address", async () => {
-			const accounts = await ethers.getSigners();
-			const 
+			const accounts = await ethers.getSigners();			
+			await ballotContract.connect(accounts[0]).giveRightToVote(accounts[1]);
+			const chairpersonVoter = await ballotContract.voters(accounts[1].address);
+			expect(chairpersonVoter.weight).to.eq(1);
 		});
 		it("can not give right to vote for someone that has voted", async () => {
-		// TODO
-		throw Error("Not implemented");
+			const accounts = await ethers.getSigners();
+			await ballotContract.connect(accounts[0]).giveRightToVote(accounts[1]);
+			await ballotContract.connect(accounts[1]).vote(1);
+			expect(ballotContract.connect(accounts[0]).giveRightToVote(accounts[1])).to.revertedWith(
+				"The voter already voted.");
 		});
 		it("can not give right to vote for someone that has already voting rights", async () => {
-		// TODO
-		throw Error("Not implemented");
+			const accounts = await ethers.getSigners();
+			await ballotContract.connect(accounts[0]).giveRightToVote(accounts[1]);
+			expect(ballotContract.connect(accounts[0]).giveRightToVote(accounts[1])).to.reverted;
 		});
 	});
 
