@@ -32,26 +32,30 @@ describe("Ballot", async () => {
 	describe("when the contract is deployed", async () => {
 		it("has the provided proposals", async () => {
 			for (let index = 0; index < PROPOSALS.length; index++) {
-			const proposal = await ballotContract.proposals(index);
-			expect(ethers.decodeBytes32String(proposal.name)).to.eq(
+				const proposal = await ballotContract.proposals(index);
+				expect(ethers.decodeBytes32String(proposal.name)).to.eq(
 				PROPOSALS[index]);
 			}
 		});
   
-	it("has zero votes for all proposals", async () => {
-      // TODO
-      throw Error("Not implemented");
-	});
-	it("sets the deployer address as chairperson", async () => {
-		const accounts = await ethers.getSigners();
-		const chairperson = await ballotContract.chairperson();
-		expect(chairperson).to.eq(accounts[0].address);
-	});
+		it("has zero votes for all proposals", async () => {
+ 			for (let index = 0; index < PROPOSALS.length; index++) {
+				const proposal = await ballotContract.proposals(index);
+				expect(proposal.voteCount).to.eq(0n);
+			}
+		});
 
-	it("sets the voting weight for the chairperson as 1", async () => {
-		const accounts = await ethers.getSigners();
-		const chairpersonVoter = await ballot
-	});
+		it("sets the deployer address as chairperson", async () => {
+			const accounts = await ethers.getSigners();
+			const chairperson = await ballotContract.chairperson();
+			expect(chairperson).to.eq(accounts[0].address);
+		});
+
+		it("sets the voting weight for the chairperson as 1", async () => {
+			const accounts = await ethers.getSigners();
+			const chairpersonVoter = await ballotContract.voters(accounts[0].address);
+			expect(chairpersonVoter.weight).to.eq(1);
+		});
   });
 
   describe("when the chairperson interacts with the giveRightToVote function in the contract", async () => {
