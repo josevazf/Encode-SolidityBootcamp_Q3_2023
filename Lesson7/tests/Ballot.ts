@@ -24,6 +24,7 @@ async function deployContract() {
 
 describe("Ballot", async () => {
 	let ballotContract: Ballot;
+	let accounts = await ethers.getSigners();
 
 	beforeEach(async () => {
 		ballotContract = await loadFixture(deployContract);
@@ -46,100 +47,98 @@ describe("Ballot", async () => {
 		});
 
 		it("sets the deployer address as chairperson", async () => {
-			const accounts = await ethers.getSigners();
 			const chairperson = await ballotContract.chairperson();
 			expect(chairperson).to.eq(accounts[0].address);
 		});
 
 		it("sets the voting weight for the chairperson as 1", async () => {
-			const accounts = await ethers.getSigners();
 			const chairpersonVoter = await ballotContract.voters(accounts[0].address);
 			expect(chairpersonVoter.weight).to.eq(1);
 		});
-  });
+	});
 
-  describe("when the chairperson interacts with the giveRightToVote function in the contract", async () => {
-    it("gives right to vote for another address", async () => {
-      // TODO
-      throw Error("Not implemented");
-    });
-    it("can not give right to vote for someone that has voted", async () => {
-      // TODO
-      throw Error("Not implemented");
-    });
-    it("can not give right to vote for someone that has already voting rights", async () => {
-      // TODO
-      throw Error("Not implemented");
-    });
-  });
+	describe("when the chairperson interacts with the giveRightToVote function in the contract", async () => {
+		it("gives right to vote for another address", async () => {
+			const accounts = await ethers.getSigners();
+			const 
+		});
+		it("can not give right to vote for someone that has voted", async () => {
+		// TODO
+		throw Error("Not implemented");
+		});
+		it("can not give right to vote for someone that has already voting rights", async () => {
+		// TODO
+		throw Error("Not implemented");
+		});
+	});
 
-  describe("when the voter interacts with the vote function in the contract", async () => {
-    // TODO
-    it("should register the vote", async () => {
-      throw Error("Not implemented");
-    });
-  });
+	describe("when the voter interacts with the vote function in the contract", async () => {
+	// TODO
+		it("should register the vote", async () => {
+		throw Error("Not implemented");
+		});
+	});
 
-  describe("when the voter interacts with the delegate function in the contract", async () => {
-    // TODO
-    it("should transfer voting power", async () => {
-      throw Error("Not implemented");
-    });
-  });
+	describe("when the voter interacts with the delegate function in the contract", async () => {
+	// TODO
+		it("should transfer voting power", async () => {
+		throw Error("Not implemented");
+		});
+	});
 
-  describe("when an account other than the chairperson interacts with the giveRightToVote function in the contract", async () => {
-    // TODO
-    it("should revert", async () => {
-      throw Error("Not implemented");
-    });
-  });
+	describe("when an account other than the chairperson interacts with the giveRightToVote function in the contract", async () => {
+	// TODO
+		it("should revert", async () => {
+		throw Error("Not implemented");
+		});
+	});
 
-  describe("when an account without right to vote interacts with the vote function in the contract", async () => {
-    // TODO
-    it("should revert", async () => {
-      throw Error("Not implemented");
-    });
-  });
+	describe("when an account without right to vote interacts with the vote function in the contract", async () => {
+	// TODO
+		it("should revert", async () => {
+		throw Error("Not implemented");
+		});
+	});
 
-  describe("when an account without right to vote interacts with the delegate function in the contract", async () => {
-    // TODO
-    it("should revert", async () => {
-      throw Error("Not implemented");
-    });
-  });
+	describe("when an account without right to vote interacts with the delegate function in the contract", async () => {
+	// TODO
+		it("should revert", async () => {
+		throw Error("Not implemented");
+		});
+	});
 
-  describe("when someone interacts with the winningProposal function before any votes are cast", async () => {
-    // TODO
-    it("should return 0", async () => {
-      throw Error("Not implemented");
-    });
-  });
+	describe("when someone interacts with the winningProposal function before any votes are cast", async () => {
+	// TODO
+		it("should return 0", async () => {
+		throw Error("Not implemented");
+		});
+	});
 
-  describe("when someone interacts with the winningProposal function after one vote is cast for the first proposal", async () => {
-    // TODO
-    it("should return 0", async () => {
-      throw Error("Not implemented");
-    });
-  });
+	describe("when someone interacts with the winningProposal function after one vote is cast for the first proposal", async () => {
+	// TODO
+		it("should return 0", async () => {
+		throw Error("Not implemented");
+		});
+	});
 
-  describe("when someone interacts with the winnerName function before any votes are cast", async () => {
-    // TODO
-    it("should return name of proposal 0", async () => {
-      throw Error("Not implemented");
-    });
-  });
+	describe("when someone interacts with the winnerName function before any votes are cast", async () => {
+	// TODO
+		it("should return name of proposal 0", async () => {
+		throw Error("Not implemented");
+		});
+	});
 
-  describe("when someone interacts with the winnerName function after one vote is cast for the first proposal", async () => {
-    // TODO
-    it("should return name of proposal 0", async () => {
-      throw Error("Not implemented");
-    });
-  });
+	describe("when someone interacts with the winnerName function after one vote is cast for the first proposal", async () => {
+	// TODO
+		it("should return name of proposal 0", async () => {
+		throw Error("Not implemented");
+		});
+	});
 
-  describe("when someone interacts with the winningProposal function and winnerName after 5 random votes are cast for the proposals", async () => {
-    // TODO
-    it("should return the name of the winner proposal", async () => {
-      throw Error("Not implemented");
-    });
-  });
+	describe("when someone interacts with the winningProposal function and winnerName after 5 random votes are cast for the proposals", async () => {
+	// TODO
+		it("should return the name of the winner proposal", async () => {
+		throw Error("Not implemented");
+		});
+	});
 });
