@@ -3,15 +3,17 @@ import { Ballot__factory } from "../typechain-types";
 require('dotenv').config()
 
 async function main() {
-/* 	const proposals = process.argv.slice(2);
+	const proposals = process.argv.slice(2);
 	console.log("Deploying Ballot contract");
 	console.log("Proposals: ");
 	proposals.forEach((element, index) => {
 		console.log(`Proposal N. ${index + 1}: ${element}`);
-	}); */
+	});
 	const alchemyUrl = `https://eth-sepolia.g.alchemy.com/v2/${process.env.ALCHEMY_KEY}`;
 	const provider = new ethers.JsonRpcProvider(alchemyUrl);
 	const lastBlock = await provider.getBlockNumber();
+	const wallet = new ethers.Wallet(process.env.MY_WALLET_PRIVATE_KEY, provider);
+	//await wallet.connect(providerSepolia);
 	console.log(lastBlock);
 
 /* 	const ballotFactory = new Ballot__factory();
@@ -26,7 +28,7 @@ async function main() {
 		console.log({ index, name, proposal });
 	} */
 }
-
+// Spiderman Batman Superman
 main().catch((error) => {
 	console.error(error);
 	process.exitCode = 1;
