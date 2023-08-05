@@ -35,7 +35,7 @@ async function main() {
 	};
 
 	// Contract address, change to contract address
-	const contractAddress = "0x8DacD90f03E67A475e34e616a67f9F871e82F35f";
+	const contractAddress = "0x216049A0573C3398A6510294559a942fC6380451";
 	//const contractAddress = "0x6E08F69f938c9478eD6701A55F95959421519527";
 
 	// Connect to deployed contract
@@ -75,7 +75,7 @@ async function main() {
 	async function vote(proposalNumber: number) {
 		//const proposalNumber = 0;
 		const _vote = await ballotContract.vote(proposalNumber - 1);
-		const votedProposal = await ballotContract.proposals(proposalNumber)
+		const votedProposal = await ballotContract.proposals(proposalNumber - 1)
 		console.log(`Vote for proposal ${proposalNumber}:`, `"${decodeBytes32String(votedProposal.name)}"`, "submited");
 		console.log("Tx hash:", _vote.hash);
 	};
