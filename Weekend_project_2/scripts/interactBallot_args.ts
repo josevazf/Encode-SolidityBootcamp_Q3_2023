@@ -3,14 +3,18 @@ import { Transaction, TransactionReceipt, decodeBytes32String, ethers } from "et
 import { Ballot__factory, Ballot } from "../typechain-types";
 
 async function main() {
-	const alchemyUrl = `https://eth-sepolia.g.alchemy.com/v2/${process.env.ALCHEMY_KEY}`;
-	const provider = new ethers.JsonRpcProvider(alchemyUrl);
+	// Change the url to your provider and set key on .env file
+	const providerUrl = `https://eth-sepolia.g.alchemy.com/v2/${process.env.PROVIDER_KEY}`;
+	const provider = new ethers.JsonRpcProvider(providerUrl);
+
+	// Change private key on .env file
 	const wallet = new ethers.Wallet(process.env.MY_WALLET_PRIVATE_KEY ?? "", provider);
 	const ballotFactory = new Ballot__factory(wallet);
 
+	// Fetch arguments to run functions (not for the deploy function)
 	const args = process.argv.slice(2);
 	
-// Deploy the contract with Proposals passed as input arguments
+	// Deploy the contract with Proposals passed as input arguments
 	async function deployContract(propos: string[]) {
 		const proposals = process.argv.slice(3);
 		console.log("Deploying Ballot contract");
@@ -31,7 +35,8 @@ async function main() {
 	};
 
 	// Contract address, change to contract address
-	const contractAddress = "0xac00780fd30973C7216EE4F5ea23139f9C487D91";
+	const contractAddress = "0x8DacD90f03E67A475e34e616a67f9F871e82F35f";
+	//const contractAddress = "0x6E08F69f938c9478eD6701A55F95959421519527";
 
 	// Connect to deployed contract
 	const ballotContract = ballotFactory.attach(contractAddress) as Ballot;
