@@ -1,5 +1,8 @@
+// Solidity Bootcamp Q3 2023
+// Weekend Project 2 - GROUP 6
+
 require('dotenv').config();
-import { Transaction, TransactionReceipt, decodeBytes32String, ethers } from "ethers";
+import { Transaction, TransactionReceipt, decodeBytes32String, ethers, toNumber } from "ethers";
 import { Ballot__factory, Ballot } from "../typechain-types";
 
 async function main() {
@@ -40,6 +43,7 @@ async function main() {
 	// Connect to deployed contract
 	const ballotContract = ballotFactory.attach(contractAddress) as Ballot;
 
+	// Filter wich function to be called
 	if (args[0] == "deploy") {
 		deployContract(args);
 	} else if (args[0] == "giveRightToVote") {
@@ -82,7 +86,7 @@ async function main() {
 	// 'winningProposal' function
 	async function winningProposal() {
 		const _winningProposal = await ballotContract.winningProposal();
-		console.log("The winning proposal number is:", _winningProposal);
+		console.log("The winning proposal number is:", toNumber(_winningProposal) + 1);
 	};
 
 	// 'winnerName' function
