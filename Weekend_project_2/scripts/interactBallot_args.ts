@@ -35,8 +35,7 @@ async function main() {
 	};
 
 	// Contract address, change to contract address
-	const contractAddress = "0x216049A0573C3398A6510294559a942fC6380451";
-	//const contractAddress = "0x6E08F69f938c9478eD6701A55F95959421519527";
+	const contractAddress = "0x6E08F69f938c9478eD6701A55F95959421519527";
 
 	// Connect to deployed contract
 	const ballotContract = ballotFactory.attach(contractAddress) as Ballot;
