@@ -2,10 +2,14 @@ import { expect } from "chai";
 import { ethers } from "hardhat";
 import { loadFixture } from "@nomicfoundation/hardhat-network-helpers";
 import { ERC20, TokenSale, MyERC20 } from "../typechain-types";
+import { HardhatEthersSigner } from "@nomicfoundation/hardhat-ethers/signers";
 
 const RATIO = 10;
 
 describe("NFT Shop", async () => {
+	let deployer: HardhatEthersSigner;
+	let acc1: HardhatEthersSigner;
+	let acc2: HardhatEthersSigner;
 	let tokenSaleContract: TokenSale;
 	let paymentTokenContract: MyERC20;
 	
@@ -18,14 +22,16 @@ describe("NFT Shop", async () => {
 		
 		// Deploying the Token Sale contract
 		const tokenSaleContractFactory = await ethers.getContractFactory("TokenSale");
-		const tokenSaleContract_ = await tokenSaleContractFactory.deploy(RATIO, paymentTokenContract);
+		const tokenSaleContract_ = await tokenSaleContractFactory.deploy(RATIO, paymentTokenContractAddress);
 		await tokenSaleContract_.waitForDeployment();
-		return { tokenSaleContract_ };
+		return { tokenSaleContract_, paymentTokenContract_ };
 	}
 
   	beforeEach(async () => {
-		const { tokenSaleContract_ } = await loadFixture(deployContracts);
+		[deployer, acc1, acc2] = await ethers.getSigners();
+		const { tokenSaleContract_, paymentTokenContract_ } = await loadFixture(deployContracts);
 		tokenSaleContract = tokenSaleContract_;
+		paymentTokenContract = paymentTokenContract_;
   	});
 
 	describe("When the Shop contract is deployed", async () => {
@@ -39,7 +45,7 @@ describe("NFT Shop", async () => {
 			// let's call the balanceOf method and it should not revert
 			const tokenContractFactory = await ethers.getContractFactory("ERC20");
 			const paymentToken = tokenContractFactory.attach(paymentTokenAddress) as ERC20;
-			await expect(paymentToken.balanceOf(ethers.ZeroAddress)).not.to.be.reverted;
+			await expect(paymentToken.balanceOf(deployer.address)).not.to.be.reverted;
 			await expect(paymentToken.totalSupply()).not.to.be.reverted;
 		});
 	});
