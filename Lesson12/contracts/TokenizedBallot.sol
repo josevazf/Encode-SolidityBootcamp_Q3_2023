@@ -51,7 +51,7 @@ contract TokenizedBallot {
 		return tokenContract.getPastVotes(account, targetBlockNumber) - votingPowerSpent[account];
 	}
 	
-    /// @dev Computes the winning proposal taking all
+    /// Computes the winning proposal taking all
     /// previous votes into account.
     function winningProposal() public view
             returns (uint winningProposal_)
