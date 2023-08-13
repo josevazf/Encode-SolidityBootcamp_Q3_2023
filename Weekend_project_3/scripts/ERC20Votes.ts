@@ -19,7 +19,8 @@ async function main() {
 
 	// Contract address, update with Token contract address
 	// Test token address - 0xc09B35aE268db3c956f6e03CCE536fE0a29b59eF
-	const tokenAddress = "0xc09B35aE268db3c956f6e03CCE536fE0a29b59eF";
+	//const tokenAddress = "0x9805944Da4F69978dffc4c02eA924911D668d81a";
+	const tokenAddress = "0xc09B35aE268db3c956f6e03CCE536fE0a29b59eF"; /// TESSSSTTTTTTTSSSSSSS
 
 	// Connect to deployed contract
 	const tokenContract = tokenFactory.attach(tokenAddress) as G6Token;
