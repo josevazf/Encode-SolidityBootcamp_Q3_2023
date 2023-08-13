@@ -23,7 +23,7 @@ async function main() {
 	const tokenContract = "0x9805944Da4F69978dffc4c02eA924911D668d81a"; // Group 6 Token Contract
 
 	// Block number (timestamp) to consider existing voting power
-	const targetBlockNumber = 4081590; // Expected to end Mon Aug 14 2023 04:07:51 GMT+0100 (Western European Summer Time)
+	const targetBlockNumber = 4081590;
 
 	// Number of proposals
 	const numberProposals = 3;
@@ -31,7 +31,7 @@ async function main() {
 	// Deploy the contract with Proposals passed as input arguments (tokenContract and tragetBlockNumber are hardcoded in the script, check above variables)
 	async function deployBallot(propos: string[]) {
 		const proposals = process.argv.slice(3);
-		console.log("Deploying TokenizedBallot contract");
+		console.log("\nDeploying TokenizedBallot contract...");
 		console.log("Proposals: ");
 		proposals.forEach((element, index) => {
 			console.log(`Proposal N. ${index + 1}: ${element}`);
@@ -81,9 +81,9 @@ async function main() {
 	};
 
 	// 'votingPower' function (check the voting power) 
-	async function votingPower(addressFrom: string) {
-		const votes = await tokenizedBallotContract.votingPower(addressFrom);
-		console.log(`\nAccount ${addressFrom} has ${ethers.formatUnits(votes).toString()} units of voting power\n`);
+	async function votingPower(account: string) {
+		const votes = await tokenizedBallotContract.votingPower(account);
+		console.log(`\nAccount ${account} has ${ethers.formatUnits(votes).toString()} units of voting power\n`);
 	};
 
 	// 'checkProposals' function, check proposals info (must manually set number of proposals at numberProposals variable)
