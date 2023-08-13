@@ -19,14 +19,17 @@ async function main() {
 	const args = process.argv.slice(2);
 
 	// Address from deployed Token contract
-	const tokenContract = "0xc09B35aE268db3c956f6e03CCE536fE0a29b59eF"; // TESSSTTTTTEEEEEE
-	//const tokenContract = "0x9805944Da4F69978dffc4c02eA924911D668d81a";
+	// const tokenContract = "0xc09B35aE268db3c956f6e03CCE536fE0a29b59eF"; // Test Token Contract
+	const tokenContract = "0x9805944Da4F69978dffc4c02eA924911D668d81a"; // Group 6 Token Contract
 
 	// Block number (timestamp) to consider existing voting power
-	const targetBlockNumber = 45165; // UPDAAATEEEEEEEEEEEE
+	const targetBlockNumber = 4085000; // Expected to end Mon Aug 14 2023 04:07:51 GMT+0100 (Western European Summer Time)
 
-	// Deploy the contract with Proposals passed as input arguments
-	async function deployContract(propos: string[]) {
+	// Number of proposals
+	const numberProposals = 3;
+
+	// Deploy the contract with Proposals passed as input arguments (tokenContract and tragetBlockNumber are hardcoded in the script, check above variables)
+	async function deployBallot(propos: string[]) {
 		const proposals = process.argv.slice(3);
 		console.log("Deploying TokenizedBallot contract");
 		console.log("Proposals: ");
@@ -45,43 +48,66 @@ async function main() {
 	};
 
 	// Contract address, change to contract address
-	const contractAddress = "0x6E08F69f938c9478eD6701A55F95959421519527";
+	// const tokenizedBallotAddress = "0xCeb0eD06CA08d025ddf9A2aaE4f02e56a8e9DAB0"; // Test TokenizedBallot Contract
+	const tokenizedBallotAddress = "0x96f08A36dc862A2FB694A10C6571a4CB1892012f"; // Group 6 TokenizedBallot Contract
 
 	// Connect to deployed contract
-	const tokenizedBallotContract = tokenizedBallotFactory.attach(contractAddress) as TokenizedBallot;
+	const tokenizedBallotContract = tokenizedBallotFactory.attach(tokenizedBallotAddress) as TokenizedBallot;
 
 	// Filter wich function to be called
-	if (args[0] == "deploy") {
-		deployContract(args);
+	if (args[0] == "deployBallot") {
+		deployBallot(args);
 	} else if (args[0] == "vote") {
 		vote(parseInt(args[1]), ethers.parseUnits(args[2]));
+	} else if (args[0] == "votingPower") {
+		votingPower(args[1]);
+	} else if (args[0] == "checkProposals") {
+		checkProposals();
 	} else if (args[0] == "winningProposal") {
 		winningProposal();
 	} else if (args[0] == "winnerName") {
 		winnerName();
 	}
 
-	// 'vote' function, choose the index
+	// 'vote' function (vote on proposal Number not index, and choose number of tokens)
 	async function vote(proposalNumber: number,  amount: bigint) {
-		//const proposalNumber = 0;
+		const powerBefore = await tokenizedBallotContract.votingPower(walletAddress);
 		const _vote = await tokenizedBallotContract.vote(proposalNumber - 1, amount);
-		const votedProposal = await tokenizedBallotContract.proposals(proposalNumber - 1)
-		console.log(`Vote for proposal ${proposalNumber}:`, `"${decodeBytes32String(votedProposal.name)}"`, "submited");
-		console.log("Tx hash:", _vote.hash);
+		const votedProposal = await tokenizedBallotContract.proposals(proposalNumber - 1);
+		const powerAfter = powerBefore - amount;
+		console.log(`\nVote for proposal ${proposalNumber}:`, `"${decodeBytes32String(votedProposal.name)}"`, "submited...");
+		console.log("Remaining voting power:", ethers.formatUnits(powerAfter));
+		console.log("Tx hash:", _vote.hash, "\n");
+	};
+
+	// 'votingPower' function (check the voting power) 
+	async function votingPower(addressFrom: string) {
+		const votes = await tokenizedBallotContract.votingPower(addressFrom);
+		console.log(`\nAccount ${addressFrom} has ${ethers.formatUnits(votes).toString()} units of voting power\n`);
+	};
+
+	// 'checkProposals' function, check proposals info (must manually set number of proposals at numberProposals variable)
+	async function checkProposals() {
+		console.log(`\nAvailable Proposals\n`);
+		for (let index = 0; index < numberProposals; index++) {
+			const proposal = await tokenizedBallotContract.proposals(index);
+			const name = ethers.decodeBytes32String(proposal.name);
+			const votes = ethers.formatUnits(proposal.voteCount);
+			console.log(`Number: ${index + 1}\nName: ${name}\nVotes: ${votes}\n`);
+		};
 	};
 
 	// 'winningProposal' function
 	async function winningProposal() {
 		const _winningProposal = await tokenizedBallotContract.winningProposal();
-		console.log("The winning proposal number is:", toNumber(_winningProposal) + 1);
+		console.log("\nThe winning proposal number is:", toNumber(_winningProposal) + 1, "\n");
 	};
 
 	// 'winnerName' function
 	async function winnerName() {
 		const _winnerName = await tokenizedBallotContract.winnerName();
-		console.log("The winning proposal name is", `"${decodeBytes32String(_winnerName)}"`);
+		console.log("\nThe winning proposal name is", `"${decodeBytes32String(_winnerName)}"\n`);
 	};
-
 }
 
 main().catch((error) => {
