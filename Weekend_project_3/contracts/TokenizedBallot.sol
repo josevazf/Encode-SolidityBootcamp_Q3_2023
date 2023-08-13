@@ -2,12 +2,12 @@
 pragma solidity >=0.7.0 <0.9.0;
 /// @title Voting with delegation.
 
-interface IMyToken {
+interface IG6Token {
 	function getPastVotes(address, uint256) external view returns (uint256);
 }
 
 contract TokenizedBallot {
-	IMyToken tokenContract;
+	IG6Token tokenContract;
 
     // This is a type for a single proposal.
     struct Proposal {
@@ -23,7 +23,7 @@ contract TokenizedBallot {
 
     /// Create a new ballot to choose one of `proposalNames`.
     constructor(bytes32[] memory proposalNames, address _tokenContract, uint256 _targetBlockNumber) {
-		tokenContract = IMyToken(_tokenContract);
+		tokenContract = IG6Token(_tokenContract);
 		targetBlockNumber = _targetBlockNumber;
         // For each of the provided proposal names,
         // create a new proposal object and add it
