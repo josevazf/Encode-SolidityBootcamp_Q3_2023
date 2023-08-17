@@ -22,6 +22,7 @@ function PageBody() {
 		<div>
 			<WalletInfo></WalletInfo>
 			<RandomProfile></RandomProfile>
+			<TokenAddressFromAPI></TokenAddressFromAPI>
 		</div>
 	)
 }
@@ -38,6 +39,7 @@ function WalletInfo() {
 				<WalletBalance address={address}></WalletBalance>
 				<TokenName></TokenName>	
 				<TokenBalance address={address}></TokenBalance>
+				<RequestTokensToBeMinted></RequestTokensToBeMinted>
       </div>
     );
   if (isConnecting)
@@ -193,4 +195,60 @@ function RandomProfile() {
       <p>Email: {data.email}</p>
     </div>
   );
+}
+
+ function TokenAddressFromAPI () {
+	const [data, setData] = useState<any>(null);
+	const [isLoading, setLoading] = useState(true);
+  
+	useEffect(() => {
+	  fetch("http://localhost:3001/get-address")
+		.then((res) => res.json())
+		.then((data) => {
+		  setData(data);
+		  setLoading(false);
+		});
+	}, []);
+  
+	if (isLoading) return <p>Loading token addres from API...</p>;
+	if (!data) return <p>No answer from API</p>;
+  
+	return (
+	  <div>
+		  <p>Token address: {data.address}</p>
+	  </div>
+	);
+}
+
+function RequestTokensToBeMinted(params: { address: `0x${string}`}) {
+	const [data, setData] = useState<any>(null);
+	const [isLoading, setLoading] = useState(false);
+
+	if (isLoading) return <p>Requesting tokens from API...</p>;
+	const requestOptions = {
+		method: 'POST',
+		headers: {'Content-Type': 'application/json'},
+		body: JSON.stringify({address: params.address})
+	}
+	if (!data) return (<button
+        disabled={isLoading}
+        onClick={() =>{
+			setLoading(true);
+			fetch("http://localhost:3001/mint-tokens", requestOptions)
+			.then((res) => res.json())
+			.then((data) => {
+			  setData(data);
+			  setLoading(false);
+			});
+			}
+        }
+      >
+        Request Tokens
+      </button>);
+	return (
+			<div>
+				<p>Mint success: {data.sucess ? 'worked' : 'failed'}</p>
+				<p>Transaction hash: {data.txHash}</p>
+			</div>
+	)
 }

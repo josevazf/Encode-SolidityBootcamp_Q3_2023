@@ -1,5 +1,6 @@
-import { Controller, Get, Param } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post } from '@nestjs/common';
 import { AppService } from './app.service';
+import { MintTokensDto } from './dtos/mintTokens.dto';
 
 // Controller should not do the work, pass it to service!
 @Controller()
@@ -17,7 +18,7 @@ export class AppController {
   }
 
   @Get('get-address')
-  getTokenAddress(): string {
+  getTokenAddress(): any {
 	return this.appService.getTokenAddress();
   }
 
@@ -34,5 +35,10 @@ export class AppController {
   @Get('get-votes/:address')
   getVotes(@Param('address') address: string): Promise <bigint> {
 	return this.appService.getVotes(address);
+  }
+
+  @Post('mint-tokens')
+  async mintTokens(@Body() body: MintTokensDto): Promise<any> {
+	return this.appService.mintTokens('');
   }
 }

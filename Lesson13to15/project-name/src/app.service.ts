@@ -28,8 +28,8 @@ export class AppService {
     return 'Other Thing yooo!';
   }
 
-  getTokenAddress(): string {
-		return TOKEN_ADDRESS;
+  getTokenAddress(): any {
+		return {address: TOKEN_ADDRESS}; // can be anything instead of 'address'
   }
 
   getTotalSupply(): Promise <bigint> {
@@ -43,4 +43,12 @@ export class AppService {
 	getVotes(address: string): Promise <bigint> {
 		return this.contract.getVotes(address);
   }
+
+  async mintTokens(address: string): Promise <any> {
+		console.log("Minting tx to", address);
+		const tx = await this.contract.mint(address, ethers.parseUnits("1"));
+		const receipt = await tx.wait(1);
+		console.log({receipt});
+		return {success: true, txHash: '...'}
+	}
 }
