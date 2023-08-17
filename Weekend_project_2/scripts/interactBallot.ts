@@ -25,8 +25,7 @@ async function main() {
 		proposals.forEach((element, index) => {
 			console.log(`Proposal N. ${index + 1}: ${element}`);
 		});
-		const ballotContract = await ballotFactory.deploy(
-			proposals.map(ethers.encodeBytes32String));
+		const ballotContract = await ballotFactory.deploy(proposals.map(ethers.encodeBytes32String));
 		await ballotContract.waitForDeployment();
 		const address = await ballotContract.getAddress();
 		console.log(`Contract deployed at address ${address}`);
