@@ -10,7 +10,7 @@ export default function InstructionsComponent() {
           <h1>My App</h1>
         </div>
       </header>
-      <p className={styles.get_started}>
+      	<p className={styles.get_started}>
         <PageBody></PageBody>
       </p>
     </div>
@@ -39,7 +39,7 @@ function WalletInfo() {
 				<WalletBalance address={address}></WalletBalance>
 				<TokenName></TokenName>	
 				<TokenBalance address={address}></TokenBalance>
-				<RequestTokensToBeMinted></RequestTokensToBeMinted>
+				<RequestTokensToBeMinted address={address}></RequestTokensToBeMinted>
       </div>
     );
   if (isConnecting)
@@ -102,7 +102,7 @@ function WalletBalance(params: { address: `0x${string}` }) { // (type_check)enfo
   if (isError) return <div>Error fetching balance</div>;
   return (
     <div>
-      Balance: {data?.formatted} {data?.symbol}
+      <p>Balance: {data?.formatted} {data?.symbol}</p>
     </div>
   );
 }
@@ -230,24 +230,25 @@ function RequestTokensToBeMinted(params: { address: `0x${string}`}) {
 		headers: {'Content-Type': 'application/json'},
 		body: JSON.stringify({address: params.address})
 	}
-	if (!data) return (<button
+	if (!data) 
+		return (
+			<button
         disabled={isLoading}
         onClick={() =>{
-			setLoading(true);
-			fetch("http://localhost:3001/mint-tokens", requestOptions)
-			.then((res) => res.json())
-			.then((data) => {
-			  setData(data);
-			  setLoading(false);
-			});
-			}
-        }
+					setLoading(true);
+					fetch("http://localhost:3001/mint-tokens", requestOptions)
+						.then((res) => res.json())
+						.then((data) => {
+							setData(data);
+							setLoading(false);
+					});
+			}}
       >
         Request Tokens
       </button>);
 	return (
 			<div>
-				<p>Mint success: {data.sucess ? 'worked' : 'failed'}</p>
+				<p>Mint success: {data.sucess ? "worked" : "failed"}</p>
 				<p>Transaction hash: {data.txHash}</p>
 			</div>
 	)
