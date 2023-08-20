@@ -28,7 +28,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <WagmiConfig config={config}>
-        <ConnectKitProvider mode="dark">
+        <ConnectKitProvider mode="dark" theme="retro">
           <body>
             <div style={{ display: "flex", flexDirection: "column", minHeight: "105vh" }}>
               <Navbar />

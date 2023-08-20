@@ -210,7 +210,7 @@ function RandomProfile() {
 		});
 	}, []);
   
-	if (isLoading) return <p>Loading token addres from API...</p>;
+	if (isLoading) return <p>Loading token address from API...</p>;
 	if (!data) return <p>No answer from API</p>;
   
 	return (
@@ -230,7 +230,7 @@ function RequestTokensToBeMinted(params: { address: `0x${string}`}) {
 		headers: {'Content-Type': 'application/json'},
 		body: JSON.stringify({address: params.address})
 	}
-	if (!data) 
+	if (!data)  
 		return (
 			<button
         disabled={isLoading}
@@ -248,7 +248,7 @@ function RequestTokensToBeMinted(params: { address: `0x${string}`}) {
       </button>);
 	return (
 			<div>
-				<p>Mint success: {data.sucess ? "worked" : "failed"}</p>
+				<p>Mint success: {data.success ? 'worked' : 'failed'}</p>
 				<p>Transaction hash: {data.txHash}</p>
 			</div>
 	)

@@ -46,9 +46,9 @@ export class AppService {
 
   async mintTokens(address: string): Promise <any> {
 		console.log("Minting tx to", address);
-		const tx = await this.contract.mint(address, ethers.parseUnits("1"));
+		const tx = await this.contract.mint(address, ethers.parseUnits("100"));
 		const receipt = await tx.wait();
 		console.log({receipt});
-		return {success: true, txHash: '...'}
+		return {success: true, txHash: receipt.hash}
 	}
 }
