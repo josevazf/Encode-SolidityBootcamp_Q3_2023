@@ -5,29 +5,39 @@ body {
 	font-family: 'Rubik';
 	font-weight: normal;
 }
+
 h1{
 	margin-bottom: 1rem;
 }
+
 h2{
 	margin-bottom: .5rem;
 	font-weight: normal;
-
 }
 
 p{
 	line-height: 1.5rem;
 	font-weight: lighter;
-
 }
 
-a {
-	color: inherit;
+a:link {
+	color: rgb(28, 29, 28);
+	background-color: transparent;
 	text-decoration: none;
-}
+	}
+	a:visited {
+	color: pink;
+	background-color: transparent;
+	text-decoration: none;
+	}
+	a:hover {
+	color: rgb(15, 15, 136);
+	background-color: transparent;
+	text-decoration: underline;
+	}
 
 * {
 	box-sizing: border-box;
-	padding: 0;
 	margin: 0;
 }
 

@@ -20,7 +20,7 @@ export default function Loading() {
 		<div className={styles.container}>
 			<header className={styles.header_container}>
 				<div className={styles.header}>
-					<h1>Tokenized Ballot dApp</h1>
+					<img src="https://tomato-leading-stoat-542.mypinata.cloud/ipfs/QmPJwPc2cShgc96WxL2qTFeFDkaKr1adxr6ysRmXkDk8rQ"></img>
 				</div>
 			</header>
 				<p className={styles.get_started}>
@@ -51,8 +51,6 @@ function PageBody() {
 				<br></br>
 				<Vote></Vote>
 				<br></br>
-				{/* <WinnerFromAPI></WinnerFromAPI> */}
-				<Winner></Winner>
 			</div>
 		);
 		if (isConnecting)
@@ -80,11 +78,12 @@ function WalletInfo() {
 	if (address)
     return (
       <div>
-				<p>Connected to the {chain?.name} network </p>
-				<WalletBalance address={address}></WalletBalance>
+				<p>Connected to <i>{chain?.name}</i> network </p>
+				{/* <WalletBalance address={address}></WalletBalance> */}
 				<TokenName></TokenName>
 				<WalletTokenBalance address={address}></WalletTokenBalance>
 				<WalletVotesFromAPI address={address}></WalletVotesFromAPI>
+				<Winner></Winner>
       </div>
     );
   if (isConnecting)
@@ -138,6 +137,7 @@ function WalletInfo() {
   );
 } */
 
+// Get ETH balance (not used)
 function WalletBalance(params: { address: `0x${string}` }) { // (type_check)enforcing the starting of the string to 0x
   const { data, isError, isLoading } = useBalance({
     address: params.address,
@@ -163,7 +163,7 @@ function TokenName() {
 
   if (isLoading) return <div>Fetching name…</div>;
   if (isError) return <div>Error fetching name</div>;
-  return <div>Token name: {name}</div>;
+  return <div><b>Token: </b> {name}</div>;
 }
 
 function WalletTokenBalance(params: { address: `0x${string}` }) {
@@ -174,7 +174,7 @@ function WalletTokenBalance(params: { address: `0x${string}` }) {
 
   if (isLoading) return <div>Fetching balance…</div>;
   if (isError) return <div>Error fetching balance</div>;
-  return <div>Balance: {data?.formatted} G6TK</div>;
+  return <div><b>Balance: </b>{data?.formatted} G6TK</div>;
 }
 
 function WalletVotesFromAPI (params: { address: `0x${string}`}) {
@@ -193,10 +193,9 @@ function WalletVotesFromAPI (params: { address: `0x${string}`}) {
 	if (isLoading) return <p>Loading token balance from API...</p>;
 	if (!data) return <p>Votes:</p>;
 
-  
 	return (
 	  <div>
-		  <p>Votes: {data}</p>
+		  <p><b>Votes: </b>{data}</p>
 	  </div>
 	);
 }
@@ -301,7 +300,7 @@ function RequestTokensFromAPI(params: { address: `0x${string}`}) {
 					});
 			}}
       >
-        Request Tokens
+        Request 100 Tokens
       </button>);
 	return (
 			<div>
@@ -342,10 +341,13 @@ function TransferTokens() {
 						})
 					}
 					>
-						Transfer tokens
+						Transfer Tokens
 					</button>
-					{isLoading && <div>Check Wallet</div>}
-					{isSuccess && <div>Transaction: {JSON.stringify(data)}</div>}
+					{isLoading && <div>Approve in wallet</div>}
+					{isSuccess && <div> 
+						<a target={"_blank"} href={`https://sepolia.etherscan.io/tx/${data?.hash}`}>
+							Transaction details
+      			</a></div>}
 			</div>
 		);
 }
@@ -373,10 +375,14 @@ function DelegateVotes() {
 						})
 					}
 					>
-						Delegate votes
+						Delegate Votes
 					</button>
-					{isLoading && <div>Check Wallet</div>}
-					{isSuccess && <div>Transaction: {JSON.stringify(data)}</div>}
+
+					{isLoading && <div>Approve in wallet</div>}
+					{isSuccess && <div> 
+						<a target={"_blank"} href={`https://sepolia.etherscan.io/tx/${data?.hash}`}>
+							Transaction details
+      			</a></div>}
 			</div>
 		);
 }
@@ -415,13 +421,28 @@ function Vote() {
 					>
 						Vote
 					</button>
-					{isLoading && <div>Check Wallet</div>}
-					{isSuccess && <div>Transaction: {JSON.stringify(data)}</div>}
+					{isLoading && <div>Approve in wallet</div>}
+					{isSuccess && <div> 
+						<a target={"_blank"} href={`https://sepolia.etherscan.io/tx/${data?.hash}`}>
+							Transaction details
+      			</a></div>}
 			</div>
 		);
 }
 
-// Apparently working but not sendig data frontend
+function Winner() {
+	const { data, isError, isLoading } = useContractRead({
+    address: BALLOT_ADDRESS,
+    abi: ballotJson.abi,
+    functionName: 'winnerName',
+  });
+
+  if (isLoading) return <div>Fetching winning proposal…</div>;
+  if (isError) return <div>Error fetching winning proposal</div>;
+  return <div><b>Winning proposal:</b> {ethers.decodeBytes32String(data as BytesLike)}</div>;
+}
+
+// Apparently working but not passing data to frontend
 /* function WinnerFromAPI () {
 	const [data, setData] = useState<any>(null);
 	const [isLoading, setLoading] = useState(false);
@@ -449,15 +470,3 @@ function Vote() {
 	  </div>
 	);
 } */
-
-function Winner() {
-	const { data, isError, isLoading } = useContractRead({
-    address: BALLOT_ADDRESS,
-    abi: ballotJson.abi,
-    functionName: 'winnerName',
-  });
-
-  if (isLoading) return <div>Fetching winning proposal…</div>;
-  if (isError) return <div>Error fetching winning proposal</div>;
-  return <div>Winning proposal: {ethers.decodeBytes32String(data as BytesLike)}</div>;
-}
