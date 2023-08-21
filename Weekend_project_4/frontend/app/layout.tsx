@@ -1,6 +1,6 @@
 "use client";
 import { WagmiConfig, createConfig } from "wagmi";
-import { mainnet, sepolia, polygon, arbitrum, polygonMumbai } from "wagmi/chains";
+import { sepolia } from "wagmi/chains";
 import { ConnectKitProvider, getDefaultConfig } from "connectkit";
 import Navbar from "@/components/instructionsComponent/navigation/navbar";
 import Footer from "@/components/instructionsComponent/navigation/footer";
@@ -31,7 +31,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <WagmiConfig config={config}>
-        <ConnectKitProvider theme="retro" mode="dark">
+        <ConnectKitProvider theme="retro">
           <body>
             <div style={{ display: "flex", flexDirection: "column", minHeight: "105vh" }}>
               <Navbar />

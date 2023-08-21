@@ -3,24 +3,31 @@ import { ethers } from 'ethers';
 import styles from "./instructionsComponent.module.css";
 import { useAccount, useBalance, useContractRead, useContractWrite, useNetwork, useSignMessage} from "wagmi";
 import * as tokenJson from '../assets/G6Token.json';
+import { Uint } from "web3";
 
 const TOKEN_ADDRESS = '0x9805944Da4F69978dffc4c02eA924911D668d81a';
 const BALLOT_ADDRESS = '0x86194b8C24DB66Ef9ACFA70b4c2fc837F0684961';
 
-export default function InstructionsComponent() {
+export default function Loading() {
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => {
+      setMounted(true)
+  }, [])
+  
   return (
-    <div className={styles.container}>
-      <header className={styles.header_container}>
-        <div className={styles.header}>
-          <h1>Tokenized Ballot dApp</h1>
-        </div>
-      </header>
-      	<p className={styles.get_started}>
-        <PageBody></PageBody>
-      </p>
-    </div>
-  );
-}
+		mounted && 
+		<div className={styles.container}>
+			<header className={styles.header_container}>
+				<div className={styles.header}>
+					<h1>Tokenized Ballot dApp</h1>
+				</div>
+			</header>
+				<p className={styles.get_started}>
+					<PageBody></PageBody>
+				</p>
+		</div>
+		);
+ }
 
 function PageBody() {
 	const {address, isConnecting, isDisconnected } = useAccount();
@@ -391,7 +398,7 @@ function Vote() {
 					<br></br>
 						<input
 							type='number'
-							value={amount}
+							value={amount as Uint}
 							onChange={(e) => setAmount(e.target.value)}
 							placeholder="Amount"
 						/>
@@ -399,7 +406,7 @@ function Vote() {
 					<button
 						disabled={!write}
 						onClick={() =>write ({
-							args: [proposalNumber, ethers.utils.parseUnits(amount)],
+							args: [uint(proposalNumber), ethers.utils.parseUnits(amount)],
 						})
 					}
 					>
