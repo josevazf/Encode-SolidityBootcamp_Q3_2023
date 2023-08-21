@@ -1,8 +1,9 @@
 import { useEffect, useState } from "react";
-import { ethers } from 'ethers';
+import { BytesLike, ethers, toNumber } from 'ethers';
 import styles from "./instructionsComponent.module.css";
 import { useAccount, useBalance, useContractRead, useContractWrite, useNetwork, useSignMessage} from "wagmi";
 import * as tokenJson from '../assets/G6Token.json';
+import * as ballotJson from '../assets/TokenizedBallot.json';
 import { Uint } from "web3";
 
 const TOKEN_ADDRESS = '0x9805944Da4F69978dffc4c02eA924911D668d81a';
@@ -37,7 +38,7 @@ function PageBody() {
 				<WalletInfo></WalletInfo>
 				<hr></hr>
 				<br></br>
-				<RequestTokensToBeMinted address={address}></RequestTokensToBeMinted>
+				<RequestTokensFromAPI address={address}></RequestTokensFromAPI>
 				<br></br>
 				<br></br>
 				<TokenBalanceFromAPI></TokenBalanceFromAPI>
@@ -50,7 +51,8 @@ function PageBody() {
 				<br></br>
 				<Vote></Vote>
 				<br></br>
-				<WinnerFromAPI></WinnerFromAPI>
+				{/* <WinnerFromAPI></WinnerFromAPI> */}
+				<Winner></Winner>
 			</div>
 		);
 		if (isConnecting)
@@ -82,7 +84,7 @@ function WalletInfo() {
 				<WalletBalance address={address}></WalletBalance>
 				<TokenName></TokenName>
 				<WalletTokenBalance address={address}></WalletTokenBalance>
-				<WalletVotes address={address}></WalletVotes>
+				<WalletVotesFromAPI address={address}></WalletVotesFromAPI>
       </div>
     );
   if (isConnecting)
@@ -175,12 +177,12 @@ function WalletTokenBalance(params: { address: `0x${string}` }) {
   return <div>Balance: {data?.formatted} G6TK</div>;
 }
 
-function WalletVotes (params: { address: `0x${string}`}) {
+function WalletVotesFromAPI (params: { address: `0x${string}`}) {
 	const [data, setData] = useState<any>(null);
 	const [isLoading, setLoading] = useState(true);
   
 	useEffect(() => {
-	  fetch(`http://localhost:3001/get-token-balance/${params.address}`)
+	  fetch(`http://localhost:3001/get-votes/${params.address}`)
 		.then((res) => res.json())
 		.then((data) => {
 		  setData(data);
@@ -189,7 +191,8 @@ function WalletVotes (params: { address: `0x${string}`}) {
 	}, []);
   
 	if (isLoading) return <p>Loading token balance from API...</p>;
-	if (!data) return <p>No answer from API</p>;
+	if (!data) return <p>Votes:</p>;
+
   
 	return (
 	  <div>
@@ -274,7 +277,7 @@ function VotesFromAPI () {
 		);
 }
 
-function RequestTokensToBeMinted(params: { address: `0x${string}`}) {
+function RequestTokensFromAPI(params: { address: `0x${string}`}) {
 	const [data, setData] = useState<any>(null);
 	const [isLoading, setLoading] = useState(false);
 
@@ -335,7 +338,7 @@ function TransferTokens() {
 					<button
 						disabled={!write}
 						onClick={() =>write ({
-							args: [addressTo, ethers.utils.parseUnits(amount)],
+							args: [addressTo, ethers.parseUnits(amount)],
 						})
 					}
 					>
@@ -383,7 +386,7 @@ function Vote() {
 	const [amount, setAmount] = useState("");
 	const { data, isLoading, isSuccess, write } = useContractWrite({
     address: BALLOT_ADDRESS,
-    abi: tokenJson.abi,
+    abi: ballotJson.abi,
     functionName: 'vote',
   })
 
@@ -406,7 +409,7 @@ function Vote() {
 					<button
 						disabled={!write}
 						onClick={() =>write ({
-							args: [uint(proposalNumber), ethers.utils.parseUnits(amount)],
+							args: [toNumber(proposalNumber), ethers.parseUnits(amount)],
 						})
 					}
 					>
@@ -418,25 +421,43 @@ function Vote() {
 		);
 }
 
-function WinnerFromAPI () {
+// Apparently working but not sendig data frontend
+/* function WinnerFromAPI () {
 	const [data, setData] = useState<any>(null);
-	const [isLoading, setLoading] = useState(true);
-  
-	useEffect(() => {
-	  fetch("http://localhost:3001/winner")
-		.then((res) => res.json())
-		.then((data) => {
-		  setData(data);
-		  setLoading(false);
-		});
-	}, []);
-  
-	if (isLoading) return <p>Loading winner from API...</p>;
-	if (!data) return <p>No answer from API</p>;
-  
+	const [isLoading, setLoading] = useState(false);
+
+	if (isLoading) return <p>Requesting info from API...</p>;
+	if (!data)  
+		return (
+			<button
+        disabled={isLoading}
+        onClick={() =>{
+					setLoading(true);
+					fetch("http://localhost:3001/winner")
+						.then((res) => res.json())
+						.then((data) => {
+							setData(data);
+							setLoading(false);
+					});
+			}}
+      >
+        Winning Proposal
+      </button>);
 	return (
 	  <div>
 		  <p>Winner: {data}</p>
 	  </div>
 	);
+} */
+
+function Winner() {
+	const { data, isError, isLoading } = useContractRead({
+    address: BALLOT_ADDRESS,
+    abi: ballotJson.abi,
+    functionName: 'winnerName',
+  });
+
+  if (isLoading) return <div>Fetching winning proposal…</div>;
+  if (isError) return <div>Error fetching winning proposal</div>;
+  return <div>Winning proposal: {ethers.decodeBytes32String(data as BytesLike)}</div>;
 }
