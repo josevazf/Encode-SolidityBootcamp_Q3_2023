@@ -1106,9 +1106,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@typechain/ethers-v6@npm:^0.4.3":
-  version: 0.4.3
-  resolution: "@typechain/ethers-v6@npm:0.4.3"
+"@typechain/ethers-v6@npm:^0.5.0":
+  version: 0.5.0
+  resolution: "@typechain/ethers-v6@npm:0.5.0"
   dependencies:
     lodash: ^4.17.15
     ts-essentials: ^7.0.1
@@ -1116,21 +1116,21 @@ __metadata:
     ethers: 6.x
     typechain: ^8.3.1
     typescript: ">=4.7.0"
-  checksum: 8c2b0cb65712d410892d4b2a78afb2f586d0081e580d1b147bea7b3a1b1f5403328cf648fd2386cb01cd34d03411c13e4cddd22404a980f2efbd087ac2ad8dea
+  checksum: 98ad8785b26bf750e2eac31989b0ec8b5bb2f4d2f567358ce9e05180c63c72ddde89d7b8caf79f0c36003e95475e524c1a7b98c40fa3eabcee1a8e1174a4015a
   languageName: node
   linkType: hard
 
-"@typechain/hardhat@npm:^8.0.3":
-  version: 8.0.3
-  resolution: "@typechain/hardhat@npm:8.0.3"
+"@typechain/hardhat@npm:^9.0.0":
+  version: 9.0.0
+  resolution: "@typechain/hardhat@npm:9.0.0"
   dependencies:
     fs-extra: ^9.1.0
   peerDependencies:
-    "@typechain/ethers-v6": ^0.4.3
+    "@typechain/ethers-v6": ^0.5.0
     ethers: ^6.1.0
     hardhat: ^2.9.9
     typechain: ^8.3.1
-  checksum: ba1678e76efad08f3ef6347b125da1840f6c04f4f754538caea048e8fe522ac34672f81a3c31a7c0e6bd78d5d38a9280838319b19a8aae69f9580c1ad3e097b7
+  checksum: cf2f3ad5ffa3496c8452766ceece5a8a97011ee8932ee8c9639013fc7dac26758a11e2080b205d8aa3b236ee016ce838a1faeb7f85cb09ff4d82b25fec83e435
   languageName: node
   linkType: hard
 
@@ -5527,8 +5527,8 @@ __metadata:
     "@nomicfoundation/hardhat-toolbox": ^3.0.0
     "@nomicfoundation/hardhat-verify": ^1.0.4
     "@openzeppelin/contracts": ^4.9.3
-    "@typechain/ethers-v6": ^0.4.3
-    "@typechain/hardhat": ^8.0.3
+    "@typechain/ethers-v6": ^0.5.0
+    "@typechain/hardhat": ^9.0.0
     "@types/chai": ^4.3.5
     "@types/mocha": ^10.0.1
     "@types/node": ^20.4.5
