@@ -105,6 +105,7 @@ function WalletInfo() {
   );
 }
 
+// Sign a message (not used)
 /* function WalletAction() {
   const [signatureMessage, setSignatureMessage] = useState("My input value");
 
@@ -138,7 +139,7 @@ function WalletInfo() {
 } */
 
 // Get ETH balance (not used)
-function WalletBalance(params: { address: `0x${string}` }) { // (type_check)enforcing the starting of the string to 0x
+/* function WalletBalance(params: { address: `0x${string}` }) { // (type_check)enforcing the starting of the string to 0x
   const { data, isError, isLoading } = useBalance({
     address: params.address,
   });
@@ -150,7 +151,7 @@ function WalletBalance(params: { address: `0x${string}` }) { // (type_check)enfo
       <p>Balance: {data?.formatted} {data?.symbol} ETH</p>
     </div>
   );
-}
+} */
 
 function TokenName() {
   const { data, isError, isLoading } = useContractRead({
@@ -195,17 +196,16 @@ function WalletVotesFromAPI (params: { address: `0x${string}`}) {
 
 	return (
 	  <div>
-		  <p><b>Votes: </b>{data}</p>
+		  <p><b>Votes: </b>{data} units</p>
 	  </div>
 	);
-}
+}	
 
 function TokenBalanceFromAPI () {
 	const [data, setData] = useState<any>(null);
 	const [isLoading, setLoading] = useState(false);
 	const [address, setAddress] = useState("");
 
-	if (!data)
 		return (
 			<div>
 				<input
@@ -228,12 +228,7 @@ function TokenBalanceFromAPI () {
 				>
 					Get balance
 				</button>
-			</div>
-		);
-
-		return (
-			<div>
-			<p>Token balance: {data}</p>
+					{data !== null && <p>{data} G6TK</p>}
 			</div>
 		);
 }
@@ -243,7 +238,6 @@ function VotesFromAPI () {
 	const [isLoading, setLoading] = useState(false);
 	const [address, setAddress] = useState("");
 
-	if (!data)
 		return (
 			<div>
 				<input
@@ -265,13 +259,8 @@ function VotesFromAPI () {
 					}}
 				>
 					Get votes
-				</button>
-			</div>
-		);
-
-		return (
-			<div>
-			<p>Votes: {data}</p>
+					</button>
+					{data !== null && <p>{data} units</p>}
 			</div>
 		);
 }
@@ -402,7 +391,7 @@ function Vote() {
 				type='number'
 					value={proposalNumber}
 					onChange={(e) => setProposal(e.target.value)}
-					placeholder="Proposal (1, 2...))"
+					placeholder="Proposal (1, 2...)"
 				/>
 					<br></br>
 						<input
@@ -415,7 +404,7 @@ function Vote() {
 					<button
 						disabled={!write}
 						onClick={() =>write ({
-							args: [toNumber(proposalNumber), ethers.parseUnits(amount)],
+							args: [(toNumber(proposalNumber) - 1), ethers.parseUnits(amount)],
 						})
 					}
 					>
@@ -442,7 +431,7 @@ function Winner() {
   return <div><b>Winning proposal:</b> {ethers.decodeBytes32String(data as BytesLike)}</div>;
 }
 
-// Apparently working but not passing data to frontend
+// Apparently working but not passing data to frontend (not in use)
 /* function WinnerFromAPI () {
 	const [data, setData] = useState<any>(null);
 	const [isLoading, setLoading] = useState(false);

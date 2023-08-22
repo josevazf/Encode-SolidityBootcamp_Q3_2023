@@ -23,12 +23,12 @@ p{
 a:link {
 	color: rgb(28, 29, 28);
 	background-color: transparent;
-	text-decoration: none;
+	text-decoration: underline;
 	}
 	a:visited {
 	color: pink;
 	background-color: transparent;
-	text-decoration: none;
+	text-decoration: underline;
 	}
 	a:hover {
 	color: rgb(15, 15, 136);

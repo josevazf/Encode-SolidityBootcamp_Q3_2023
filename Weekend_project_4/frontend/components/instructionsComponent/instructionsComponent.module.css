@@ -56,12 +56,12 @@ border-radius: 8px;
 }
 
 .button{
-	display: flex;
+display: flex;
 flex-direction: row;
 align-items: center;
 justify-content: center;
 
-padding: 24px 32px;
+padding: 32px 32px;
 gap: 12px;
 
 width: 392px;
