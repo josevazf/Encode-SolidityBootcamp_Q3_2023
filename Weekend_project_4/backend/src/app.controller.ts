@@ -4,7 +4,6 @@ import { MintTokensDto } from './dtos/mintTokens.dto';
 import { BytesLike } from 'ethers';
 import { Bytes } from 'web3';
 
-// Controller should not do the work, pass it to service!
 @Controller()
 export class AppController {
   constructor(private readonly appService: AppService) {}

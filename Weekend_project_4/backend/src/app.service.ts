@@ -3,9 +3,7 @@ import { BytesLike, ethers } from 'ethers';
 import * as tokenJson from './assets/G6Token.json';
 import * as ballotJson from './assets/TokenizedBallot.json';
 import * as dotenv from 'dotenv';
-import { Bytes } from 'web3';
 dotenv.config();
-// Service should carry out the work
 
 const TOKEN_ADDRESS = '0x9805944Da4F69978dffc4c02eA924911D668d81a';
 const BALLOT_ADDRESS = '0x86194b8C24DB66Ef9ACFA70b4c2fc837F0684961';
