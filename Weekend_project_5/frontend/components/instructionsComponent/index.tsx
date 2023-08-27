@@ -1,7 +1,7 @@
-import { useState, useEffect } from "react";
-import styles from "./instructionsComponent.module.css";
-import { useAccount, useBalance, useContractRead, useContractWrite, useNetwork } from "wagmi";
-import { ethers } from "ethers";
+import { useState, useEffect } from 'react';
+import styles from './instructionsComponent.module.css';
+import { useAccount, useBalance, useContractRead, useContractWrite, useNetwork } from 'wagmi';
+import { BigNumberish, ethers } from 'ethers';
 import * as tokenJson from '../assets/LotteryToken.json';
 import * as lotteryJson from '../assets/Lottery.json';
 
@@ -121,10 +121,10 @@ function TokenSymbol() {
   const { data, isError, isLoading } = useContractRead({
     address: TOKEN_ADDRESS,
     abi: tokenJson.abi,
-    functionName: "symbol",
+    functionName: 'symbol',
   });
 
-  const symbol = typeof data === "string" ? data : 0;
+  const symbol = typeof data === 'string' ? data : 0;
 
   if (isLoading) return <div>Fetching name…</div>;
   if (isError) return <div>Error fetching symbol</div>;
@@ -135,6 +135,7 @@ function WalletTokenBalance(params: { address: `0x${string}` }) {
   const { data, isError, isLoading } = useBalance({
     address: params.address,
 		token: TOKEN_ADDRESS,
+		watch: true
   });
 
   if (isLoading) return <div>Fetching balance…</div>;
@@ -153,22 +154,82 @@ function LotteryInfo() {
 				</div>
 			</header>
 				<BetsState></BetsState>
+				<BetsClosingTime></BetsClosingTime>
+				<TokenPrice></TokenPrice>
+				<BetPrice></BetPrice>
+				<BetFee></BetFee>
 		</div>
 	);
 }
 
 function BetsState() {
-	const { data, isError, isLoading } = useContractRead({
+	const { isError, isLoading } = useContractRead({
     address: LOTTERY_ADDRESS,
     abi: lotteryJson.abi,
     functionName: 'betsOpen',
+		watch: true
   });
 
-	const betsOpen = false ? "Closed" : "Open";
+	const betsOpen = false ? 'Open' : 'Closed';
 
 	if (isLoading) return <div>Checking bets state…</div>;
   if (isError) return <div>Error checking bets state</div>;
   return <div><b>Bets state:</b> {betsOpen}</div>;
+}
+
+function BetsClosingTime() {
+	const { data, isError, isLoading } = useContractRead({
+    address: LOTTERY_ADDRESS,
+    abi: lotteryJson.abi,
+    functionName: 'betsClosingTime',
+		watch: true
+  });
+
+	const time = Number(data);
+	const closingTime = new Date(time * 1000);
+
+	if (isLoading) return <div>Checking closing time…</div>;
+  if (isError) return <div>Error checking closing time</div>;
+  return <div><b>Closing time:</b> {closingTime.toLocaleTimeString()} ({closingTime.toLocaleDateString()})</div>;
+}
+
+function TokenPrice() {
+	const { data, isError, isLoading } = useContractRead({
+    address: LOTTERY_ADDRESS,
+    abi: lotteryJson.abi,
+    functionName: 'purchaseRatio',
+		watch: true
+  });
+
+	if (isLoading) return <div>Checking token price…</div>;
+  if (isError) return <div>Error checking token price</div>;
+  return <div><b>Token price:</b> {String((Number(data) * 0.01))} <TokenSymbol></TokenSymbol> / 0.01 ETH</div>;
+}
+
+function BetPrice() {
+	const { data, isError, isLoading } = useContractRead({
+    address: LOTTERY_ADDRESS,
+    abi: lotteryJson.abi,
+    functionName: 'betPrice',
+		watch: true
+  });
+
+	if (isLoading) return <div>Checking bets state…</div>;
+  if (isError) return <div>Error checking bets state</div>;
+  return <div><b>Bet price:</b> {String(data)} <TokenSymbol></TokenSymbol></div>;
+}
+
+function BetFee() {
+	const { data, isError, isLoading } = useContractRead({
+    address: LOTTERY_ADDRESS,
+    abi: lotteryJson.abi,
+    functionName: 'betFee',
+		watch: true
+  });
+
+	if (isLoading) return <div>Checking bets state…</div>;
+  if (isError) return <div>Error checking bets state</div>;
+  return <div><b>Bet fee:</b> {String(data)} <TokenSymbol></TokenSymbol></div>;
 }
 
 // Apparently working but not passing data to frontend (not in use)
@@ -222,7 +283,7 @@ function TokenBalanceFromAPI () {
 				<input
 					value={address}
 					onChange={(e) => setAddress(e.target.value)}
-					placeholder="Address (0x...)"
+					placeholder='Address (0x...)'
 				/>
 				<br></br>
 				<button
@@ -239,7 +300,7 @@ function TokenBalanceFromAPI () {
 				>
 					Get balance
 				</button>
-					{data !== null && <p>{data} G6TK</p>}
+					{data !== null && <p>{data} <TokenSymbol></TokenSymbol></p>}
 			</div>
 		);
 }
@@ -258,14 +319,14 @@ function TransferTokens() {
 				<input
 					value={addressTo}
 					onChange={(e) => setAddress(e.target.value)}
-					placeholder="Address (0x...)"
+					placeholder='Address (0x...)'
 				/>
 					<br></br>
 						<input
 							type='number'
 							value={amount}
 							onChange={(e) => setAmount(e.target.value)}
-							placeholder="Amount"
+							placeholder='Amount'
 						/>
 				<br></br>
 					<button
@@ -296,12 +357,13 @@ function LotteryContract() {
 				</div>
 			</header>
 				<BuyTokens></BuyTokens>
+				<br></br>
+				<SellTokens></SellTokens>
 		</div>
 	);
 }
 
 function BuyTokens() {
-	const [addressTo, setAddress] = useState("");
 	const [amount, setAmount] = useState("");
 	const { data, isLoading, isSuccess, write } = useContractWrite({
     address: LOTTERY_ADDRESS,
@@ -316,7 +378,7 @@ function BuyTokens() {
 						value={amount}
 						onChange={(e) => setAmount(e.target.value)}
 						placeholder="Amount"
-					/>
+					/> 100/0.01 ETH
 				<br></br>
 					<button
 						disabled={!write}
@@ -325,7 +387,42 @@ function BuyTokens() {
 						})
 					}
 					>
-						Swapping Tokens
+						Buy Tokens
+					</button>
+					{isLoading && <div>Approve in wallet</div>}
+					{isSuccess && <div>
+						<a target={"_blank"} href={`https://sepolia.etherscan.io/tx/${data?.hash}`}>
+							Transaction details
+      			</a></div>}
+			</div>
+		);
+}
+
+function SellTokens() {
+	const [amount, setAmount] = useState("");
+	const { data, isLoading, isSuccess, write } = useContractWrite({
+    address: LOTTERY_ADDRESS,
+    abi: lotteryJson.abi,
+    functionName: 'returnTokens',
+  })
+
+		return (
+			<div>
+					<input
+						type='number'
+						value={amount}
+						onChange={(e) => setAmount(e.target.value)}
+						placeholder="Amount"
+					/> 0.01 ETH / 100 TTK
+				<br></br>
+					<button
+						disabled={!write}
+						onClick={() =>write ({
+							value: ethers.parseUnits(amount) 
+						})
+					}
+					>
+						Sell Tokens
 					</button>
 					{isLoading && <div>Approve in wallet</div>}
 					{isSuccess && <div>
