@@ -267,15 +267,14 @@ function TokenContract() {
 					<h3>Token Interaction</h3>
 				</div>
 			</header>
-				<TokenBalanceFromAPI></TokenBalanceFromAPI>
-				<br></br>
+				{/* <TokenBalanceFromAPI></TokenBalanceFromAPI> */}
 				<TransferTokens></TransferTokens>
 				<br></br>
 		</div>
 	);
 }
 
-function TokenBalanceFromAPI () {
+/* function TokenBalanceFromAPI () {
 	const [data, setData] = useState<any>(null);
 	const [isLoading, setLoading] = useState(false);
 	const [address, setAddress] = useState("");
@@ -305,7 +304,7 @@ function TokenBalanceFromAPI () {
 					{data !== null && <p>{data} <TokenSymbol></TokenSymbol></p>}
 			</div>
 		);
-}
+} */
 
 function TransferTokens() {
 	const [addressTo, setAddress] = useState("");
