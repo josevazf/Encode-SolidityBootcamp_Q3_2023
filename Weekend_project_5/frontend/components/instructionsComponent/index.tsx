@@ -364,6 +364,8 @@ function LotteryContract() {
 				<br></br>
 				<OpenBets></OpenBets>
 				<br></br>
+				<CloseLottery></CloseLottery>
+				<br></br>
 				<Bet></Bet>
 				<br></br>
 				<BetMany></BetMany>
